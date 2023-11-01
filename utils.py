@@ -1,6 +1,8 @@
-import json
 import random
-import dns.reslover
+import pymongo
+import dns.resolver
+from constants import MONGODB_URI
+
 
 waiting_gifs = [
     "https://media3.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif?cid=ecf05e475p246q1gdcu96b5mkqlqvuapb7xay2hywmki7f5q&ep=v1_gifs_search&rid=giphy.gif&ct=g",
@@ -36,7 +38,6 @@ confession_gifs = [
 def random_pfp():
     with open(r"data/pfps.txt", "r") as f:
         data = f.read()
-
     data = data.split("\n")
     return random.choice(data).strip()
 
@@ -44,17 +45,20 @@ def random_pfp():
 def mongo():
     dns.resolver.default_resolver = dns.resolver.Resolver(configure=False)
     dns.resolver.default_resolver.nameservers = ["8.8.8.8"]
-    data = pymongo.MongoClient("mongodb://localhost:27017/")
+    data = pymongo.MongoClient(MONGODB_URI)
     user = data["secretSanctuary"]["users"]
     return user
 
 
-def save_confessions(data):
+def save_confession(data):
     db = mongo()
     db.insert_one(data)
 
 
-def load_confessions():
-    user = mongo()
-    confession = db.find()
+def load_confessions(size):
+    db = mongo()
+    confessions = db.aggregate([{"$sample": {"size": size}}])
+    confession = []
+    for conf in confessions:
+        confession.append(conf)
     return confession
