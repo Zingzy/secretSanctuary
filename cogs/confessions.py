@@ -6,7 +6,13 @@ import discord
 from discord import app_commands, ui
 from discord.ext import commands
 
-from utils import confession_gifs, load_confessions, save_confession, waiting_gifs, random_pfp
+from utils import (
+    confession_gifs,
+    load_confessions,
+    save_confession,
+    waiting_gifs,
+    random_pfp,
+)
 
 
 class ConfessModal(ui.Modal, title="Spill the tea ☕"):
@@ -64,8 +70,8 @@ class AnonymousConfessions(commands.Cog):
         self.bot = bot
 
     @app_commands.tree.command(
-    name="explore-confessions",
-    description="Explore Random Anonymous Secrets",
+        name="explore-confessions",
+        description="Explore Random Anonymous Secrets",
     )
     @app_commands.describe(private="Would send you messages privately if enabled")
     async def discover(interaction, private: bool = False):
@@ -76,7 +82,7 @@ class AnonymousConfessions(commands.Cog):
         embed = discord.Embed(
             title=f"Confession by {data[ch]['author']}",
             color=discord.Color.random(),
-            description=data[ch]["confession"]+"\n",
+            description=data[ch]["confession"] + "\n",
         )
 
         embed.set_footer(
@@ -90,7 +96,6 @@ class AnonymousConfessions(commands.Cog):
         embed.add_field(name="🔢 Confession Id", value=f"`{ch}`")
 
         await interaction.response.send_message(embed=embed, ephemeral=private)
-
 
     @app_commands.command(
         name="confess", description="Submit a confession anonymously 🤫"
