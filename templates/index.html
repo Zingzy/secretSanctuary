@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SecretSanctuary</title>
+</head>
+  <style>
+    body {
+      background: #333333;
+    }
+    .logo{
+      margin-top: 30px;
+      margin: 40px;
+      font-size: 30px;
+      font-weight: bold;
+      color: orange;
+    }
+    .create {
+      margin: 700px;
+      padding: 13px 35px;
+      font-size: 16px;
+      border-radius: 0.75rem;
+      color: #000;
+      background: rgb(97, 125, 255);
+      right: 50px;
+    }
+    #confession {
+        padding: 10px 20px;
+        margin: 30px;
+        border-radius: 10px;
+        box-sizing: content-box;
+        max-height: 100px;
+        overflow: hidden;
+        color: transparent;
+        opacity: 100%;
+        color: #fff;
+        background: linear-gradient(to bottom, #252525, #252525, #0a0a0a);
+        transition: height 0.3s ease-in;
+      }
+    #confession:hover {
+      max-height: 100%;
+        background: #252525;
+    }
+    #date {
+      text-align:end;
+    }
+  </style>
+<body>
+  <header>
+    <a class="logo">SecretSanctuary</a>
+    <a href="https://discord.gg/isynth" class="create">Create your post</a>
+  </header>
+    {% if data %}
+        {% for i in data %}
+
+            <div id="confession">
+              <p>{{ data[i]["author"] }}</p>
+              <p>{{ data[i]["confession"] }}</p>
+              <p id="date">{{ data[i]["date"] }} | {{ data[i]["time_gmt"] }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+</body>
+</html>
