@@ -25,7 +25,7 @@ class ConfessModal(ui.Modal, title="Spill the tea ☕"):
     )
 
     async def on_submit(self, interaction: discord.Interaction):
-        data = load_confessions()
+        data = {}
 
         id = str(uuid.uuid4())[:8]
         identifier = random.randint(1000, 10000)
@@ -69,20 +69,30 @@ class AnonymousConfessions(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @app_commands.tree.command(
+    @app_commands.command(
         name="explore-confessions",
         description="Explore Random Anonymous Secrets",
     )
     @app_commands.describe(private="Would send you messages privately if enabled")
-    async def discover(interaction, private: bool = False):
-        data = load_confessions()
-        ch = random.choice(list(data.keys()))
+    async def discover(self, interaction, private: bool = False):
+        conf = load_confessions(1)
+        data = {}
+        for confessions in conf:
+            data = confessions
+        ch = data.keys()
+        key = None
+        for keys in ch:
+            if keys != "_id":
+                key = keys
+                break
+
+        # ch = random.choice(list(data.keys()))
         pfp = random_pfp()
 
         embed = discord.Embed(
-            title=f"Confession by {data[ch]['author']}",
+            title=f"Confession by {data[key]['author']}",
             color=discord.Color.random(),
-            description=data[ch]["confession"] + "\n",
+            description=data[key]["confession"] + "\n",
         )
 
         embed.set_footer(
@@ -92,8 +102,8 @@ class AnonymousConfessions(commands.Cog):
 
         embed.set_thumbnail(url=pfp)
 
-        embed.add_field(name="📅 Confession Date", value=data[ch]["date"])
-        embed.add_field(name="🔢 Confession Id", value=f"`{ch}`")
+        embed.add_field(name="📅 Confession Date", value=data[key]["date"])
+        embed.add_field(name="🔢 Confession Id", value=f"`{key}`")
 
         await interaction.response.send_message(embed=embed, ephemeral=private)
 
@@ -118,7 +128,7 @@ class AnonymousConfessions(commands.Cog):
             hours, remainder = divmod(error.retry_after, 3600)
             minutes, seconds = divmod(remainder, 60)
             seconds = round(seconds)
-            time_left = f"{hours+' hour, ' if not hours<1 else ''}{int(minutes)} minute{'s' if minutes != 1 else ''} and {seconds} second{'s' if seconds != 1 else ''}"
+            time_left = f"{ hours + ' hour, ' if not hours<1 else ''}{int(minutes)} minute{'s' if minutes != 1 else ''} and {seconds} second{'s' if seconds != 1 else ''}"
 
             embed = discord.Embed(
                 title="⏳ Cooldown",
@@ -136,4 +146,4 @@ class AnonymousConfessions(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(AnonymousConfessions(bot))
-    print("Anonymous Confessions Sumbitter is loaded")
+    print("Anonymous Confessions Submitter is loaded")

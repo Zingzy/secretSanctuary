@@ -14,19 +14,23 @@ CORS(app)
 
 @app.route("/", methods=["GET"])
 def confess():
-    data = load_confessions()
-
-    keys = random.sample(list(data.keys()), 5)
     new_dic = {}
-    for key in keys:
-        new_dic[key] = data[key]
+    data = load_confessions(size=5)
 
-    print(new_dic)
+    for a in data:
+        check = []
+        keys = a.keys()
+        for key in keys:
+            if key not in check:
+                new_dic[key] = a[key]
+                check.append(key)
+        check.clear()
+
     return render_template("index.html", data=new_dic)
 
 
 def run():
-    app.run(host="0.0.0.0", port=8080, debug=True, use_reloader=False)
+    app.run(host="0.0.0.0", port=8000, debug=True, use_reloader=False)
 
 
 def run_server():

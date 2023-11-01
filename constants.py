@@ -4,3 +4,4 @@ from dotenv import load_dotenv
 load_dotenv()
 
 TOKEN = os.environ["TOKEN"]
+MONGODB_URI = os.environ["MONGODB_URI"]
