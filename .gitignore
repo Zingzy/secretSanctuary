@@ -4,5 +4,4 @@ env
 venv
 .env
 poetry.lock
-
-poe
+.idea
