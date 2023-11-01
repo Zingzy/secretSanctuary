@@ -41,13 +41,13 @@ def random_pfp():
     return random.choice(data).strip()
 
 
-
 def mongo():
     dns.resolver.default_resolver = dns.resolver.Resolver(configure=False)
     dns.resolver.default_resolver.nameservers = ["8.8.8.8"]
     data = pymongo.MongoClient("mongodb://localhost:27017/")
     user = data["secretSanctuary"]["users"]
     return user
+
 
 def save_confessions(data):
     db = mongo()

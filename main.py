@@ -8,7 +8,13 @@ import uuid
 from constants import TOKEN
 from discord.ext import commands
 from discord import app_commands, ui
-from utils import confession_gifs, load_confessions, save_confession, waiting_gifs, random_pfp
+from utils import (
+    confession_gifs,
+    load_confessions,
+    save_confession,
+    waiting_gifs,
+    random_pfp,
+)
 from app import run_server
 import discord
 
@@ -54,8 +60,6 @@ async def on_message(message):
         return
 
     await bot.process_commands(message)
-
-
 
 
 @bot.command()
