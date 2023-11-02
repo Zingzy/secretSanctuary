@@ -26,6 +26,8 @@ def confess():
                 check.append(key)
         check.clear()
 
+    new_dic.pop("_id")
+
     return render_template("index.html", data=new_dic)
 
 
