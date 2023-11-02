@@ -80,6 +80,7 @@ class AnonymousSuggestion(commands.Cog):
         name="suggest",
         description="Suggest anything you want",
     )
+    @app_commands.checks.cooldown(1, 3600.0)
     async def suggest(self, interaction: discord.Interaction):
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
@@ -95,6 +96,7 @@ class AnonymousSuggestion(commands.Cog):
         name="feedback",
         description="Suggest anything you want",
     )
+    @app_commands.checks.cooldown(1, 3600.0)
     async def feedback(self, interaction: discord.Interaction):
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
