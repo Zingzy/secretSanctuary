@@ -86,7 +86,9 @@ class AnonymousSuggestion(commands.Cog):
 
     @app_commands.command()
     @app_commands.default_permissions(administrator=True)
-    async def suggestion_channel(self, interaction: discord.Interaction, channel: discord.TextChannel = None):
+    async def suggestion_channel(
+        self, interaction: discord.Interaction, channel: discord.TextChannel = None
+    ):
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
         channel_id = None
@@ -95,33 +97,47 @@ class AnonymousSuggestion(commands.Cog):
         schema = {
             "_id": interaction.guild.id,
             "suggestion_channel": channel_id,
-            "feedback_channel": None
+            "feedback_channel": None,
         }
 
         if not server:
             db.insert_one(schema)
             if channel is None:
-                await interaction.response.send_message("set suggestion channel to None")
+                await interaction.response.send_message(
+                    "set suggestion channel to None"
+                )
                 return
-            await interaction.response.send_message(f"set suggestion channel to {channel.mention}")
+            await interaction.response.send_message(
+                f"set suggestion channel to {channel.mention}"
+            )
             return
 
         if channel is None:
-            db.update_one({"_id": interaction.guild.id}, {"$set": {"suggestion_channel": None}})
+            db.update_one(
+                {"_id": interaction.guild.id}, {"$set": {"suggestion_channel": None}}
+            )
             await interaction.response.send_message("set suggestion channel to None")
             return
-        db.update_one({"_id": interaction.guild.id}, {"$set": {"suggestion_channel": channel.id}})
-        await interaction.response.send_message(f"set suggestion channel to {channel.mention}")
+        db.update_one(
+            {"_id": interaction.guild.id}, {"$set": {"suggestion_channel": channel.id}}
+        )
+        await interaction.response.send_message(
+            f"set suggestion channel to {channel.mention}"
+        )
 
     @suggestion_channel.error
     async def suggestion_channel_error(self, interaction: discord.Interaction, error):
         if isinstance(error, app_commands.errors.MissingPermissions):
-            await interaction.response.send_message("you don't have permission to do that")
+            await interaction.response.send_message(
+                "you don't have permission to do that"
+            )
             return
 
     @app_commands.command()
     @app_commands.default_permissions(administrator=True)
-    async def feedback_channel(self, interaction: discord.Interaction, channel: discord.TextChannel = None):
+    async def feedback_channel(
+        self, interaction: discord.Interaction, channel: discord.TextChannel = None
+    ):
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
         channel_id = None
@@ -130,7 +146,7 @@ class AnonymousSuggestion(commands.Cog):
         schema = {
             "_id": interaction.guild.id,
             "suggestion_channel": None,
-            "feedback_channel": channel_id
+            "feedback_channel": channel_id,
         }
 
         if not server:
@@ -138,20 +154,30 @@ class AnonymousSuggestion(commands.Cog):
             if channel is None:
                 await interaction.response.send_message("set feedback channel to None")
                 return
-            await interaction.response.send_message(f"set feedback channel to {channel.mention}")
+            await interaction.response.send_message(
+                f"set feedback channel to {channel.mention}"
+            )
             return
 
         if channel is None:
-            db.update_one({"_id": interaction.guild.id}, {"$set": {"feedback_channel": None}})
+            db.update_one(
+                {"_id": interaction.guild.id}, {"$set": {"feedback_channel": None}}
+            )
             await interaction.response.send_message("set feedback channel to None")
             return
-        db.update_one({"_id": interaction.guild.id}, {"$set": {"feedback_channel": channel.id}})
-        await interaction.response.send_message(f"set feedback channel to {channel.mention}")
+        db.update_one(
+            {"_id": interaction.guild.id}, {"$set": {"feedback_channel": channel.id}}
+        )
+        await interaction.response.send_message(
+            f"set feedback channel to {channel.mention}"
+        )
 
     @feedback_channel.error
     async def feedback_channel_error(self, interaction: discord.Interaction, error):
         if isinstance(error, app_commands.errors.MissingPermissions):
-            await interaction.response.send_message("you don't have permission to do that")
+            await interaction.response.send_message(
+                "you don't have permission to do that"
+            )
             return
 
 
