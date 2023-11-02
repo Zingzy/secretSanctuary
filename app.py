@@ -15,6 +15,10 @@ CORS(app)
 def index():
     return render_template("index.html")
 
+@app.route("/tos", methods=["GET"])
+def tos():
+    return render_template("tos.html")
+
 @app.route("/confessions", methods=["GET"])
 def confess():
     new_dic = {}
