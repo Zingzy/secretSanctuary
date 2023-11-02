@@ -106,3 +106,17 @@ def insert_feedback(server_id, feedback):
     }
     feedbacks.append(append)
     db.update_one({"_id": server_id}, {"$set": {"feedbacks": feedbacks}})
+
+
+def get_suggestion(server_id):
+    db = mongo("servers")
+    server = db.find_one({"_id": server_id})
+    suggestions = server["suggestions"]
+    return suggestions
+
+
+def get_feedback(server_id):
+    db = mongo("servers")
+    server = db.find_one({"_id": server_id})
+    feedbacks = server["feedbacks"]
+    return feedbacks
