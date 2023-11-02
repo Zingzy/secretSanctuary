@@ -1,8 +1,9 @@
 import random
 import pymongo
+import datetime
+import random
 import dns.resolver
 from constants import MONGODB_URI
-
 
 waiting_gifs = [
     "https://media3.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif?cid=ecf05e475p246q1gdcu96b5mkqlqvuapb7xay2hywmki7f5q&ep=v1_gifs_search&rid=giphy.gif&ct=g",
@@ -74,3 +75,34 @@ def load_confessions(size):
     for conf in confessions:
         confession.append(conf)
     return confession
+
+
+def insert_suggestion(server_id, suggestion):
+    db = mongo("servers")
+    server = db.find_one({"_id": server_id})
+    suggestions = server["suggestions"]
+    identifier = random.randint(1000, 10000)
+    append = {
+        "feedback": suggestion,
+        "date": datetime.date.today().strftime("%B %d, %Y"),
+        "time_gmt": datetime.datetime.utcnow().strftime("%H:%M:%S"),
+        "author": f"AnonymousUser#{identifier}",
+    }
+    suggestions.append(append)
+    db.update_one({"_id": server_id}, {"$set": {"suggestions": suggestions}})
+
+
+def insert_feedback(server_id, feedback):
+    db = mongo("servers")
+    server = db.find_one({"_id": server_id})
+    feedbacks = server["feedbacks"]
+    print(feedbacks)
+    identifier = random.randint(1000, 10000)
+    append = {
+        "feedback": feedback,
+        "date": datetime.date.today().strftime("%B %d, %Y"),
+        "time_gmt": datetime.datetime.utcnow().strftime("%H:%M:%S"),
+        "author": f"AnonymousUser#{identifier}",
+    }
+    feedbacks.append(append)
+    db.update_one({"_id": server_id}, {"$set": {"feedbacks": feedbacks}})

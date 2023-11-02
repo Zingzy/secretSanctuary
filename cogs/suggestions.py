@@ -1,7 +1,7 @@
 import discord
 from discord import ui, app_commands
 from discord.ext import commands
-from utils import mongo, suggestion_gifs, feedback_gifs, random_pfp
+from utils import mongo, suggestion_gifs, feedback_gifs, random_pfp, insert_suggestion, insert_feedback
 import random
 
 class SuggestionModal(ui.Modal, title="contact mods without them knowing who you are"):
@@ -28,6 +28,7 @@ class SuggestionModal(ui.Modal, title="contact mods without them knowing who you
         embed.set_thumbnail(url="https://media2.giphy.com/media/EEbiK7EP3ohrNXQIc1/giphy.gif?cid=ecf05e47952vhkf0meyq1yogmi7cagsmnk04ji3t3xzd3ss8&ep=v1_gifs_search&rid=giphy.gif&ct=g")
         embed.set_footer(text="Anonymous Suggestion")
         await channel.send(embed=embed)
+        insert_suggestion(server_id=interaction.guild.id, suggestion=self.suggestion.value)
 
         embed2 = discord.Embed(
             description="Your anonymous suggestion has been successfully made !",
@@ -62,6 +63,7 @@ class FeedbackModal(ui.Modal, title="contact mods without them knowing who you a
         embed.set_footer(text="Anonymous Feedback")
         embed.set_thumbnail(url="https://media0.giphy.com/media/9xmjP6FkdINCA6Ucp4/giphy.gif?cid=ecf05e47z0fiascm1vdb3dfk91iq68hvbousm205bgkq7dkv&ep=v1_gifs_search&rid=giphy.gif&ct=g")
         await channel.send(embed=embed)
+        insert_feedback(server_id=interaction.guild.id, feedback=self.feedback.value)
 
         embed2 = discord.Embed(
             description="Your anonymous feedback has been successfully made !",
@@ -80,7 +82,7 @@ class AnonymousSuggestion(commands.Cog):
         name="suggest",
         description="Suggest anything you want",
     )
-    @app_commands.checks.cooldown(1, 3600.0)
+    # @app_commands.checks.cooldown(1, 3600.0)
     async def suggest(self, interaction: discord.Interaction):
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
@@ -96,8 +98,9 @@ class AnonymousSuggestion(commands.Cog):
         name="feedback",
         description="Suggest anything you want",
     )
-    @app_commands.checks.cooldown(1, 3600.0)
+    # @app_commands.checks.cooldown(1, 3600.0)
     async def feedback(self, interaction: discord.Interaction):
+        # await interaction.response.defer()
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
         if not server:
@@ -113,6 +116,7 @@ class AnonymousSuggestion(commands.Cog):
     async def suggestion_channel(
         self, interaction: discord.Interaction, channel: discord.TextChannel = None
     ):
+        await interaction.response.defer()
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
         channel_id = None
@@ -122,16 +126,18 @@ class AnonymousSuggestion(commands.Cog):
             "_id": interaction.guild.id,
             "suggestion_channel": channel_id,
             "feedback_channel": None,
+            "feedbacks": [],
+            "suggestions": [],
         }
 
         if not server:
             db.insert_one(schema)
             if channel is None:
-                await interaction.response.send_message(
+                await interaction.followup.send(
                     "set suggestion channel to None"
                 )
                 return
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 f"set suggestion channel to {channel.mention}"
             )
             return
@@ -140,18 +146,18 @@ class AnonymousSuggestion(commands.Cog):
             db.update_one(
                 {"_id": interaction.guild.id}, {"$set": {"suggestion_channel": None}}
             )
-            await interaction.response.send_message("set suggestion channel to None")
+            await (interaction.followup.send("set suggestion channel to None"))
             return
         db.update_one(
             {"_id": interaction.guild.id}, {"$set": {"suggestion_channel": channel.id}}
         )
 
-        await interaction.response.send_message(embed=discord.Embed(title="Suggestion channel set ✨", description="You can now use the /suggest command", color=discord.Color.green() ), ephemeral=True)
+        await interaction.followup.send(embed=discord.Embed(title="Suggestion channel set ✨", description="You can now use the /suggest command", color=discord.Color.green() ), ephemeral=True)
 
     @suggestion_channel.error
     async def suggestion_channel_error(self, interaction: discord.Interaction, error):
         if isinstance(error, app_commands.errors.MissingPermissions):
-            await interaction.response.send_message(embed=discord.Embed(title="Missing permissions", description="You need to be an administrator to use this command", color=discord.Color.red() ), ephemeral=True)
+            await interaction.followup.send(embed=discord.Embed(title="Missing permissions", description="You need to be an administrator to use this command", color=discord.Color.red() ), ephemeral=True)
             return
 
     @app_commands.command()
@@ -159,6 +165,7 @@ class AnonymousSuggestion(commands.Cog):
     async def feedback_channel(
         self, interaction: discord.Interaction, channel: discord.TextChannel = None
     ):
+        await interaction.response.defer()
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
         channel_id = None
@@ -168,14 +175,16 @@ class AnonymousSuggestion(commands.Cog):
             "_id": interaction.guild.id,
             "suggestion_channel": None,
             "feedback_channel": channel_id,
+            "feedbacks": [],
+            "suggestions": [],
         }
 
         if not server:
             db.insert_one(schema)
             if channel is None:
-                await interaction.response.send_message("set feedback channel to None")
+                await interaction.followup.send("set feedback channel to None")
                 return
-            await interaction.response.send_message(
+            await interaction.followup.send(
                 f"set feedback channel to {channel.mention}"
             )
             return
@@ -184,13 +193,13 @@ class AnonymousSuggestion(commands.Cog):
             db.update_one(
                 {"_id": interaction.guild.id}, {"$set": {"feedback_channel": None}}
             )
-            await interaction.response.send_message("set feedback channel to None")
+            await interaction.followup.send("set feedback channel to None")
             return
         db.update_one(
             {"_id": interaction.guild.id}, {"$set": {"feedback_channel": channel.id}}
         )
 
-        await interaction.response.send_message(embed=discord.Embed(title="Feedback channel set ✨", description="You can now use the /feedback command", color=discord.Color.green() ), ephemeral=True)
+        await interaction.followup.send(embed=discord.Embed(title="Feedback channel set ✨", description="You can now use the /feedback command", color=discord.Color.green() ), ephemeral=True)
 
     @feedback_channel.error
     async def feedback_channel_error(self, interaction: discord.Interaction, error):
