@@ -3,7 +3,7 @@ import pymongo
 import datetime
 import random
 import dns.resolver
-from constants import MONGODB_URI
+from constants import MONGODB_URI, TOKEN
 
 waiting_gifs = [
     "https://media3.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif?cid=ecf05e475p246q1gdcu96b5mkqlqvuapb7xay2hywmki7f5q&ep=v1_gifs_search&rid=giphy.gif&ct=g",
@@ -132,3 +132,25 @@ def get_password(server_id):
 def set_password(server_id, password):
     db = mongo("servers")
     db.update_one({"_id": server_id}, {"$set": {"password": password}})
+
+
+import requests
+
+def get_server_name_and_icon(server_id):
+    response = requests.get(f"https://discord.com/api/v9/guilds/{server_id}", headers={"Authorization": f"Bot {TOKEN}"})
+    if response.status_code == 200:
+        data = response.json()
+        name = data["name"]
+        icon = data["icon"]
+        if icon.startswith("a_"):
+            # Animated icon
+            icon_url = f"https://cdn.discordapp.com/icons/{server_id}/{icon}.gif"
+        else:
+            # Static icon
+            icon_url = f"https://cdn.discordapp.com/icons/{server_id}/{icon}.png"
+
+        return (name, icon_url)
+    else:
+        # Handle errors
+        print(f"Error: {response.status_code}")
+        return None

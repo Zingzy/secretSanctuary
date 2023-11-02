@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="https://media.discordapp.net/attachments/1168652789614911490/1169654320178921552/kbxlw7n.png?ex=65563079&is=6543bb79&hm=d8c0b27d594cf719bb9b931e487b944b487c58d4a863307cdc5a1ebdceb59409&=&width=600&height=600">
-
-    <title>SecretSanctuary | Anonymous Confessions</title>
+    <title>SecretSancturay | Suggestions | {{ server_name }}</title>
+    <link rel="icon" href="{{ server_icon }}">
     <style>
         body {
             background: #2C2F33;
@@ -14,86 +13,6 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-
-        .confession-box {
-            background: #36393E;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            transition: max-height 0.3s ease-in-out;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .confession-box:hover {
-            transform: scale(1.05);
-        }
-
-        .content {
-            max-height: 70px;
-            overflow: hidden;
-            position: relative;
-            transition: max-height 0.3s ease-in-out;
-        }
-
-        .confession-text {
-            margin-top: 10px;
-        }
-
-        .gradient-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50px;
-            background: linear-gradient(to bottom, rgba(54, 57, 62, 0), #36393E);
-        }
-
-        .author {
-            font-weight: bold;
-            color: #7289DA;
-        }
-
-        .timestamp {
-            text-align: right;
-            font-size: 14px;
-            color: #99AAB5;
-            margin-top: 10px;
-        }
-
-        .expanded {
-            max-height: none;
-        }
-
-        .content.expanded .gradient-overlay {
-            display: none;
-        }
-
-        .reload-button {
-            background-color: #7289DA;
-            color: #ffffff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 20px auto;
-            display: block;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-            margin-bottom: 50px;
-        }
-
-        .reload-button:hover {
-            background-color: #4e5d94;
         }
 
         .header-parent {
@@ -150,6 +69,76 @@
             color: #7289DA;
         }
 
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .suggestion-box {
+            background: #36393E;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: max-height 0.3s ease-in-out;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .suggestion-box:hover {
+            transform: scale(1.05);
+        }
+
+        .content {
+            max-height: 70px;
+            overflow: hidden;
+            position: relative;
+            transition: max-height 0.3s ease-in-out;
+        }
+
+        .suggestion-text {
+            margin-top: 10px;
+        }
+
+        .gradient-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background: linear-gradient(to bottom, rgba(54, 57, 62, 0), #36393E);
+        }
+
+        .author {
+            font-weight: bold;
+            color: #7289DA;
+        }
+
+        .timestamp {
+            text-align: right;
+            font-size: 14px;
+            color: #99AAB5;
+            margin-top: 10px;
+        }
+
+        .expanded {
+            max-height: none;
+        }
+
+        .content.expanded .gradient-overlay {
+            display: none;
+        }
+
+        .disclaimer {
+            text-align: center;
+            color: #99AAB5;
+            font-size: 14px;
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
         .post-confession-section {
             background: #7289DA;
             color: #ffffff;
@@ -173,7 +162,7 @@
             margin: 0 auto;
         }
 
-        .post-confession-section ol li {
+        .post-confession-section li {
             margin-bottom: 5px;
         }
 
@@ -186,6 +175,7 @@
             font-size: 18px;
             cursor: pointer;
             transition: transform 0.3s ease;
+            margin-top: 15px;
         }
 
         .post-confession-section button.invite-button:hover {
@@ -236,9 +226,7 @@
             .container {
                 padding: 0 20px;
             }
-            .header {
-                width: 80%;
-            }
+
             .header {
                 width: 80%;
             }
@@ -250,18 +238,23 @@
             .social-buttons a {
                 margin-left: 0px;
             }
+
             .post-confession-section h2 {
                 font-size: 24px;
             }
+
             .post-confession-section p {
                 font-size: 16px;
             }
+
             .post-confession-section ol {
-                font-size: 14px;
+                font-size: 16px;
             }
+
             .post-confession-section button.invite-button {
                 font-size: 16px;
             }
+
             .other-links h2 {
                 font-size: 24px;
             }
@@ -278,20 +271,17 @@
                 margin: 10px 0;
             }
         }
-    </style>
 
-    <script>
-        function toggleConfession(confessionBox) {
-            confessionBox.classList.toggle('expanded');
-        }
-    </script>
+    </style>
 </head>
 
 <body>
+
     <div class="header-parent">
         <header class="header">
             <div class="header-logo">
-                <a href="/" style="all:unset; cursor: pointer;">SecretSanctuary</a></div>
+                <a href="/" style="all:unset; cursor: pointer;">SecretSanctuary</a>
+            </div>
             <div class="social-buttons">
                 <a href="https://github.com/Zingzy/secretSanctuary" target="_blank"><img
                         src="https://cdn.discordapp.com/attachments/1132642817211125801/1169395275253698570/530279.png?ex=65553f37&is=6542ca37&hm=5dac96454b464f4093d97c1737472d9d1a4f0d066c9763ffcd30ef451835adc8&"></a>
@@ -303,43 +293,48 @@
 
     <div class="container">
         {% if data %}
-        {% for confession in data %}
-        <div class="confession-box">
+        {% for i in data %}
+        <div class="suggestion-box">
             <div class="content" onclick="toggleConfession(this)">
-                <div class="author">{{ data[confession]["author"] }}</div>
-                <div class="confession-text">{{ data[confession]["confession"] }}</div>
-                {% if data[confession]["confession"]|length > 200 %}
+                <div class="author">{{ i["author"] }}</div>
+                <div class="suggestion-text">{{ i["feedback"] }}</div>
+                {% if i["feedback"]|length > 200 %}
                 <div class="gradient-overlay"></div>
                 {% endif %}
             </div>
-            <div class="timestamp">{{ data[confession]["date"] }} | {{ data[confession]["time_gmt"] }}</div>
+            <div class="timestamp">{{ i["date"] }} | {{ i["time_gmt"] }}</div>
         </div>
         {% endfor %}
+        {% else %}
+            <h2 style="text-align: center;">No Feedbacks yet!</h2>
         {% endif %}
     </div>
-
-    <button class="reload-button" onclick="location.reload(true)">Load New Confessions</button>
+    <p class="disclaimer">Limited to last 20 Feedbacks!</p>
 
     <section class="post-confession-section">
         <div class="container">
-            <h2>Share Your Confession</h2>
-            <p>Have a confession to make? It's easy to share your secret with us! Follow these steps to post your
-                confession:</p>
-            <ol>
-                <li>Invite our bot to your Discord server.</li>
-                <li>Use the <span class="commands-discord">/confess</span> command in any text channel.</li>
-                <li>Share your confession anonymously with the world.</li>
-            </ol>
-            <p>Join our community and get things off your chest today!</p>
-            <a href="https://discord.com/api/oauth2/authorize?client_id=1168874960081649684&permissions=448824986689&scope=applications.commands%20bot"><button class="invite-button">Invite Bot</button></a>
-        </div>
+        <h2>How to use post your own feedback!</h2>
+        <p>Have an anonymous feedback to give (negative too lol)? It's easy to share your feedbacks anonymously to your server mods! Follow these steps to post your
+        <ol>
+            <li>Go to the <code>{{ server_name }}</code> server.</li>
+            <li>Use the <span class="commands-discord">/feedback</span> command and give your amazing Anonymous suggestion.</li>
+            <li>Come back here and view the suggestion.</li>
+        </ol>
+        <h2>How to congifure for your own server!</h2>
+        <ol>
+            <li>Add the bot from the link give below.</li>
+            <li>Use the <span class="commands-discord">/feedback-channel</span> and the <span class="commands-discord">/set-password</span> commands to setup the bot for your server.</li>
+            <li>Start posting anonymously.</li>
+        </ol>
+        <a href="https://discord.com/api/oauth2/authorize?client_id=1168874960081649684&permissions=448824986689&scope=applications.commands%20bot"><button class="invite-button">Invite Bot</button></a>
+    </div>
     </section>
     <section class="other-links">
         <h2>Other Links</h2>
 
         <div class="container">
+            <a href="/confessions">Anonymous Confessions</a>
             <a href="/suggestions">Anonymous Suggestions</a>
-            <a href="/feedbacks">Anonymous Feedback</a>
             <a href="/about">About</a>
         </div>
     </section>

@@ -57,7 +57,7 @@ class FeedbackModal(ui.Modal, title="contact mods without them knowing who you a
         label="👉 Literally anything you want!",
         style=discord.TextStyle.paragraph,
         max_length=4000,
-        placeholder="💬 I would like to suggest that ...",
+        placeholder="💬 My Feedback is that ...",
         min_length=20,
     )
 
@@ -95,7 +95,7 @@ class AnonymousSuggestion(commands.Cog):
 
     @app_commands.command(
         name="set-password",
-        description="Set a password for your server",
+        description="Set/change the password for your server 🔒",
     )
     @app_commands.default_permissions(administrator=True)
     async def set_password(self, interaction: discord.Interaction, password: str):
@@ -133,7 +133,7 @@ class AnonymousSuggestion(commands.Cog):
 
     @app_commands.command(
         name="password",
-        description="Get a password of your server",
+        description="Get a password of your server if you forgot it 🧠",
     )
     @app_commands.default_permissions(administrator=True)
     async def password(self, interaction: discord.Interaction):
@@ -171,7 +171,7 @@ class AnonymousSuggestion(commands.Cog):
 
     @app_commands.command(
         name="suggest",
-        description="Suggest anything you want",
+        description="Suggest anything you want ✍️",
     )
     # @app_commands.checks.cooldown(1, 3600.0)
     async def suggest(self, interaction: discord.Interaction):
@@ -199,7 +199,7 @@ class AnonymousSuggestion(commands.Cog):
 
     @app_commands.command(
         name="feedback",
-        description="Suggest anything you want",
+        description="provide your anonymous feedback 📝",
     )
     # @app_commands.checks.cooldown(1, 3600.0)
     async def feedback(self, interaction: discord.Interaction):
@@ -228,7 +228,7 @@ class AnonymousSuggestion(commands.Cog):
             return
         await interaction.response.send_modal(FeedbackModal())
 
-    @app_commands.command()
+    @app_commands.command(name = "suggestion-channel", description = "Set a suggestion channel")
     @app_commands.default_permissions(administrator=True)
     async def suggestion_channel(
         self, interaction: discord.Interaction, channel: discord.TextChannel = None
@@ -290,7 +290,7 @@ class AnonymousSuggestion(commands.Cog):
             )
             return
 
-    @app_commands.command()
+    @app_commands.command(name="feedback-channel", description="Set a feedback channel")
     @app_commands.default_permissions(administrator=True)
     async def feedback_channel(
         self, interaction: discord.Interaction, channel: discord.TextChannel = None
