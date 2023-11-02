@@ -1,8 +1,8 @@
 import discord
 from discord import ui, app_commands
 from discord.ext import commands
-from utils import mongo
-
+from utils import mongo, suggestion_gifs, feedback_gifs, random_pfp
+import random
 
 class SuggestionModal(ui.Modal, title="contact mods without them knowing who you are"):
     suggestion = ui.TextInput(
@@ -21,10 +21,21 @@ class SuggestionModal(ui.Modal, title="contact mods without them knowing who you
             description=self.suggestion.value,
             color=discord.Color.og_blurple(),
         )
-        embed.set_author(name="Anonymous User")
+
+        author = f"AnonymousUser#{random.randint(1000, 10000)}"
+
+        embed.set_author(name=author)
+        embed.set_thumbnail(url="https://media2.giphy.com/media/EEbiK7EP3ohrNXQIc1/giphy.gif?cid=ecf05e47952vhkf0meyq1yogmi7cagsmnk04ji3t3xzd3ss8&ep=v1_gifs_search&rid=giphy.gif&ct=g")
         embed.set_footer(text="Anonymous Suggestion")
         await channel.send(embed=embed)
-        await interaction.response.send_message("sent suggestion", ephemeral=True)
+
+        embed2 = discord.Embed(
+            description="Your anonymous suggestion has been successfully made !",
+            color=discord.Color.og_blurple(),
+        )
+        embed2.set_image(url=random.choice(suggestion_gifs))
+        embed2.set_footer(text="Anonymous Suggestion")
+        await interaction.response.send_message(embed=embed2, ephemeral=True)
 
 
 class FeedbackModal(ui.Modal, title="contact mods without them knowing who you are"):
@@ -44,10 +55,21 @@ class FeedbackModal(ui.Modal, title="contact mods without them knowing who you a
             description=self.feedback.value,
             color=discord.Color.og_blurple(),
         )
-        embed.set_author(name="Anonymous User")
+
+        author_name = f"anonymousUser#{random.randint(1000, 10000)}"
+
+        embed.set_author(name=author_name)
         embed.set_footer(text="Anonymous Feedback")
+        embed.set_thumbnail(url="https://media0.giphy.com/media/9xmjP6FkdINCA6Ucp4/giphy.gif?cid=ecf05e47z0fiascm1vdb3dfk91iq68hvbousm205bgkq7dkv&ep=v1_gifs_search&rid=giphy.gif&ct=g")
         await channel.send(embed=embed)
-        await interaction.response.send_message("sent feedback", ephemeral=True)
+
+        embed2 = discord.Embed(
+            description="Your anonymous feedback has been successfully made !",
+            color=discord.Color.og_blurple(),
+        )
+        embed2.set_image(url=random.choice(feedback_gifs))
+        embed2.set_footer(text="Anonymous Feedback")
+        await interaction.response.send_message(embed=embed2, ephemeral=True)
 
 
 class AnonymousSuggestion(commands.Cog):
@@ -62,10 +84,10 @@ class AnonymousSuggestion(commands.Cog):
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
         if not server:
-            await interaction.response.send_message("no suggestion channel set")
+            await interaction.response.send_message(embed=discord.Embed(title="No suggestion channel set", description="Ask the server mods to set up the feedback channel", color=discord.Color.red() ))
             return
         if server["suggestion_channel"] is None:
-            await interaction.response.send_message("no suggestion channel set")
+            await interaction.response.send_message(embed=discord.Embed(title="No suggestion channel set", description="Ask the server mods to set up the feedback channel", color=discord.Color.red() ))
             return
         await interaction.response.send_modal(SuggestionModal())
 
@@ -77,10 +99,10 @@ class AnonymousSuggestion(commands.Cog):
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
         if not server:
-            await interaction.response.send_message("no feedback channel set")
+            await interaction.response.send_message(embed=discord.Embed(title="No feedback channel set", description="Ask the server mods to set up the feedback channel", color=discord.Color.red() ), ephemeral=True)
             return
         if server["feedback_channel"] is None:
-            await interaction.response.send_message("no feedback channel set")
+            await interaction.response.send_message(embed=discord.Embed(title="No feedback channel set", description="Ask the server mods to set up the feedback channel", color=discord.Color.red() ), ephemeral=True)
             return
         await interaction.response.send_modal(FeedbackModal())
 
@@ -121,16 +143,13 @@ class AnonymousSuggestion(commands.Cog):
         db.update_one(
             {"_id": interaction.guild.id}, {"$set": {"suggestion_channel": channel.id}}
         )
-        await interaction.response.send_message(
-            f"set suggestion channel to {channel.mention}"
-        )
+
+        await interaction.response.send_message(embed=discord.Embed(title="Suggestion channel set ✨", description="You can now use the /suggest command", color=discord.Color.green() ), ephemeral=True)
 
     @suggestion_channel.error
     async def suggestion_channel_error(self, interaction: discord.Interaction, error):
         if isinstance(error, app_commands.errors.MissingPermissions):
-            await interaction.response.send_message(
-                "you don't have permission to do that"
-            )
+            await interaction.response.send_message(embed=discord.Embed(title="Missing permissions", description="You need to be an administrator to use this command", color=discord.Color.red() ), ephemeral=True)
             return
 
     @app_commands.command()
@@ -168,16 +187,13 @@ class AnonymousSuggestion(commands.Cog):
         db.update_one(
             {"_id": interaction.guild.id}, {"$set": {"feedback_channel": channel.id}}
         )
-        await interaction.response.send_message(
-            f"set feedback channel to {channel.mention}"
-        )
+
+        await interaction.response.send_message(embed=discord.Embed(title="Feedback channel set ✨", description="You can now use the /feedback command", color=discord.Color.green() ), ephemeral=True)
 
     @feedback_channel.error
     async def feedback_channel_error(self, interaction: discord.Interaction, error):
         if isinstance(error, app_commands.errors.MissingPermissions):
-            await interaction.response.send_message(
-                "you don't have permission to do that"
-            )
+            await interaction.response.send_message(embed=discord.Embed(title="Missing permissions", description="You need to be an administrator to use this command", color=discord.Color.red() ), ephemeral=True)
             return
 
 

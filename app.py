@@ -12,7 +12,7 @@ app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/", methods=["GET"])
+@app.route("/confessions", methods=["GET"])
 def confess():
     new_dic = {}
     data = load_confessions(size=5)
@@ -28,7 +28,7 @@ def confess():
 
     new_dic.pop("_id")
 
-    return render_template("index.html", data=new_dic)
+    return render_template("confessions.html", data=new_dic)
 
 
 def run():

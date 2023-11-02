@@ -4,95 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>SecretSanctuary</title>
+    <title>SecretSanctary Bot</title>
     <style>
         body {
-            background: #2C2F33;
-            color: #ffffff;
             font-family: Arial, sans-serif;
+            background-color: #36393f;
+            color: #ffffff;
             margin: 0;
             padding: 0;
-        }
-
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-        }
-
-        .confession-box {
-            background: #36393E;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 20px;
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
-            transition: max-height 0.3s ease-in-out;
-            transition: transform 0.3s ease-in-out;
-        }
-
-        .confession-box:hover {
-            transform: scale(1.05);
-        }
-
-        .content {
-            max-height: 70px;
-            overflow: hidden;
-            position: relative;
-            transition: max-height 0.3s ease-in-out;
-        }
-
-        .confession-text {
-            margin-top: 10px;
-        }
-
-        .gradient-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50px;
-            background: linear-gradient(to bottom, rgba(54, 57, 62, 0), #36393E);
-        }
-
-        .author {
-            font-weight: bold;
-            color: #7289DA;
-        }
-
-        .timestamp {
-            text-align: right;
-            font-size: 14px;
-            color: #99AAB5;
-            margin-top: 10px;
-        }
-
-        .expanded {
-            max-height: none;
-        }
-
-        .content.expanded .gradient-overlay {
-            display: none;
-        }
-
-        .reload-button {
-            background-color: #7289DA;
-            color: #ffffff;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 20px auto;
-            display: block;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-            margin-bottom: 50px;
-        }
-
-        .reload-button:hover {
-            background-color: #4e5d94;
         }
 
         .header-parent {
@@ -149,50 +68,73 @@
             color: #7289DA;
         }
 
-        .post-confession-section {
-            background: #7289DA;
-            color: #ffffff;
-            padding: 40px 0;
-            text-align: center;
-        }
-
-        .post-confession-section h2 {
+        h1 {
+            margin: 0;
             font-size: 36px;
-            margin-bottom: 20px;
         }
 
-        .post-confession-section p {
-            font-size: 18px;
-            margin-bottom: 20px;
+        section {
+            margin: 20px;
+            padding: 20px;
+            background-color: #2f3136;
+            border-radius: 8px;
         }
 
-        .post-confession-section ol {
-            text-align: left;
-            max-width: 600px;
-            margin: 0 auto;
+        .link {
+            color: #ffffff;
+            text-decoration: none;
+            background-color: #7289da;
+            padding: 10px 20px;
+            border-radius: 5px;
         }
 
-        .post-confession-section button.invite-button {
-            background-color: #ffffff;
-            color: #7289DA;
-            padding: 15px 30px;
+        .link-hover:hover {
+            background-color: #677bc4;
+        }
+
+        footer {
+            background-color: #23272a;
+            text-align: center;
+            padding: 10px;
+            /* position: fixed; */
+            bottom: 0;
+            width: 100%;
+        }
+
+        .button {
+            background-color: #7289da;
+            color: #ffffff;
+            padding: 10px 20px;
             border: none;
             border-radius: 5px;
-            font-size: 18px;
             cursor: pointer;
-            transition: transform 0.3s ease;
         }
 
-        .post-confession-section button.invite-button:hover {
-            transform: scale(1.05);
+        .button:hover {
+            background-color: #677bc4;
+        }
+
+        /* Discord-like input field */
+        .input-field {
+            background-color: #2f3136;
+            color: #ffffff;
+            padding: 10px;
+            border: 1px solid #7289da;
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+        /* Discord-like textarea */
+        .textarea {
+            background-color: #2f3136;
+            color: #ffffff;
+            padding: 10px;
+            border: 1px solid #7289da;
+            border-radius: 5px;
+            margin-bottom: 10px;
+            resize: none;
         }
     </style>
-
-    <script>
-        function toggleConfession(confessionBox) {
-            confessionBox.classList.toggle('expanded');
-        }
-    </script>
 </head>
 
 <body>
@@ -200,48 +142,48 @@
         <header class="header">
             <div class="header-logo">SecretSanctuary</div>
             <div class="social-buttons">
-                <a href="#" target="_blank"><img
+                <a href="https://github.com/Zingzy/secretSanctuary" target="_blank"><img
                         src="https://cdn.discordapp.com/attachments/1132642817211125801/1169395275253698570/530279.png?ex=65553f37&is=6542ca37&hm=5dac96454b464f4093d97c1737472d9d1a4f0d066c9763ffcd30ef451835adc8&"></a>
-                <a href="#" target="_blank"><img
+                <a href="https://discord.gg/nBA6kmqaaK" target="_blank"><img
                         src="https://cdn.discordapp.com/attachments/1132642817211125801/1169395495916023950/477886.png?ex=65553f6c&is=6542ca6c&hm=6c4632d863ee065b0e394a64240705da23e47df5301e4cac5d3b496aaef97b40&"></a>
             </div>
         </header>
     </div>
 
-    <div class="container">
-        {% if data %}
-        {% for confession in data %}
-        <div class="confession-box">
-            <div class="content" onclick="toggleConfession(this)">
-                <div class="author">{{ data[confession]["author"] }}</div>
-                <div class="confession-text">{{ data[confession]["confession"] }}</div>
-                {% if data[confession]["confession"]|length > 200 %}
-                <div class="gradient-overlay"></div>
-                {% endif %}
-            </div>
-            <div class="timestamp">{{ data[confession]["date"] }} | {{ data[confession]["time_gmt"] }}</div>
-        </div>
-        {% endfor %}
-        {% endif %}
-    </div>
-
-    <button class="reload-button" onclick="location.reload(true)">Load New Confessions</button>
-
-    <section class="post-confession-section">
-        <div class="container">
-            <h2>Share Your Confession</h2>
-            <p>Have a confession to make? It's easy to share your secret with us! Follow these steps to post your
-                confession:</p>
-            <ol>
-                <li>Invite our bot to your Discord server.</li>
-                <li>Use the <code>/confess</code> command in any text channel.</li>
-                <li>Share your confession anonymously with the world.</li>
-            </ol>
-            <p>Join our community and get things off your chest today!</p>
-            <button class="invite-button">Invite Bot</button>
-        </div>
+    <section class="bot-description">
+        <h2>Annoyingly Confide in us</h2>
+        <p>SecretSanctary is an anonymous confession, feedback, and suggestions bot for Discord. It allows users to
+            share their thoughts anonymously, ensuring their privacy and confidentiality.</p>
     </section>
 
+    <section class="how-it-works">
+        <h2>How It Works</h2>
+        <p>1. Add SecretSanctary bot to your Discord server.</p>
+        <p>2. Users can submit their confessions, feedback, or suggestions using the bot's commands.</p>
+        <p>3. All submissions are kept anonymous and private.</p>
+    </section>
+
+    <section class="privacy">
+        <h2>Privacy Protection</h2>
+        <p>SecretSanctary bot takes user privacy seriously. All submissions are encrypted and stored securely. No
+            personal information is collected or shared.</p>
+    </section>
+
+    <section class="random-confessions">
+        <h2>Random Confessions</h2>
+        <!-- Add code here to display random confessions from the bot -->
+        <div id="random-confession"></div>
+    </section>
+
+    <section class="add-bot">
+        <h2>Add SecretSanctary to Your Server</h2>
+        <p>Click the link below to add SecretSanctary bot to your Discord server:</p>
+        <a class="link" href="YOUR_DISCORD_BOT_INVITE_LINK_HERE" target="_blank">Add SecretSanctary Bot</a>
+    </section>
+
+    <footer>
+        <p>&copy; 2023 SecretSanctary Bot. All rights reserved.</p>
+    </footer>
 </body>
 
 </html>

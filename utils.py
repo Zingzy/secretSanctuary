@@ -17,6 +17,18 @@ confession_gifs = [
     "https://media1.giphy.com/media/7jnPK8t4QBuOdE3ouE/giphy.gif?cid=ecf05e47ryv2afuiv8wd2evwuuwxw7fy8xgebgoy44qhjwtb&ep=v1_gifs_search&rid=giphy.gif&ct=g",
 ]
 
+suggestion_gifs = [
+    "https://media0.giphy.com/media/7TqDUEMT50uAztuB83/giphy.gif?cid=ecf05e47952vhkf0meyq1yogmi7cagsmnk04ji3t3xzd3ss8&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+    "https://media4.giphy.com/media/3o6MboFf6raVHXAqha/giphy.gif?cid=ecf05e47952vhkf0meyq1yogmi7cagsmnk04ji3t3xzd3ss8&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+    "https://media3.giphy.com/media/3rYvT80acw5jfqTWlU/giphy.gif?cid=ecf05e47952vhkf0meyq1yogmi7cagsmnk04ji3t3xzd3ss8&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+]
+
+feedback_gifs = [
+    "https://media4.giphy.com/media/MFwBk6Ig786VhnbVwJ/giphy.gif?cid=ecf05e47wddjgovik0y4cww83b3pdzp1dln37miymuk15r80&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+    "https://media4.giphy.com/media/ZF8GoFOeBDwHFsVYqt/giphy.gif?cid=ecf05e47wddjgovik0y4cww83b3pdzp1dln37miymuk15r80&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+    "https://media1.giphy.com/media/h08E3tuV8LXswr6mF0/giphy.gif?cid=ecf05e47wddjgovik0y4cww83b3pdzp1dln37miymuk15r80&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+]
+
 
 # def load_confessions():
 #     try:
@@ -51,7 +63,7 @@ def mongo(db):
 
 
 def save_confession(data):
-    db = mongo()
+    db = mongo(db="secretSanctuary")
     db.insert_one(data)
 
 
