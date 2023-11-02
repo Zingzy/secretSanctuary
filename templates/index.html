@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://media.discordapp.net/attachments/1168877083301257279/1169615000676085810/snid4ju.png?ex=65560bda&is=654396da&hm=c1c21635b511146f1aa0eea5f27f264afd1c4dfa5831621ec43879ab512d961f&=&width=600&height=600">
+
     <title>SecretSanctary Bot</title>
     <style>
         body {
@@ -50,6 +55,7 @@
         .header-logo {
             font-weight: bold;
             font-size: 24px;
+
         }
 
         .social-buttons a {
@@ -80,16 +86,22 @@
             border-radius: 8px;
         }
 
-        .link {
+        .add-bot-link {
             color: #ffffff;
             text-decoration: none;
             background-color: #7289da;
             padding: 10px 20px;
             border-radius: 5px;
+            font-size: 20px;
         }
 
         .link-hover:hover {
             background-color: #677bc4;
+        }
+
+        .add-bot-link-parent {
+            margin: 20px 0px;
+            text-align: center;
         }
 
         footer {
@@ -108,6 +120,21 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+        }
+
+        .commands-button {
+            all: unset;
+            background-color: #36393f;
+            padding: 30px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 30px;
+        }
+
+        .commands-button:hover {
+            background-color: #7289da;
+            transform: scale(1.05);
         }
 
         .button:hover {
@@ -134,13 +161,106 @@
             margin-bottom: 10px;
             resize: none;
         }
+
+        .bot-description {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bot-description .info {
+            max-width: 600px;
+            width: 100%;
+            padding: 0px 60px;
+            text-align: center;
+        }
+
+        .bot-description .info h2 {
+            margin: 0;
+            font-size: 36px;
+            font-family: 'Exo 2', sans-serif;
+        }
+
+        .bot-description .info p {
+            font-family: 'Exo 2', sans-serif;
+            font-size: large;
+        }
+
+        .bot-description .logo-div {
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .bot-description .logo {
+            width: 100%;
+            max-width: 300px;
+            transition: transform 0.3s ease;
+        }
+
+        .bot-description .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .commands {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1px 30px;
+        }
+
+        .commands-button {
+            all: unset;
+            background-color: #36393f;
+            padding: 30px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 30px;
+        }
+
+        @media screen and (max-width: 600px) {
+            .bot-description {
+                flex-direction: column;
+            }
+
+            .bot-description .info {
+                padding: 0px 20px;
+            }
+
+            .bot-description .logo-div {
+                margin: 20px 0px;
+            }
+
+            .commands {
+                flex-direction: column;
+            }
+
+            .commands-button {
+                margin: 10px 0px;
+            }
+
+            .header {
+                width: 80%;
+            }
+
+            .info p {
+                margin: 10px 10px;
+            }
+
+            .commands-button {
+                font-size: 25px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="header-parent">
         <header class="header">
-            <div class="header-logo">SecretSanctuary</div>
+            <div class="header-logo"><a href="#" style="all:unset; cursor: pointer;">SecretSanctuary</a></div>
             <div class="social-buttons">
                 <a href="https://github.com/Zingzy/secretSanctuary" target="_blank"><img
                         src="https://cdn.discordapp.com/attachments/1132642817211125801/1169395275253698570/530279.png?ex=65553f37&is=6542ca37&hm=5dac96454b464f4093d97c1737472d9d1a4f0d066c9763ffcd30ef451835adc8&"></a>
@@ -151,34 +271,51 @@
     </div>
 
     <section class="bot-description">
-        <h2>Annoyingly Confide in us</h2>
-        <p>SecretSanctary is an anonymous confession, feedback, and suggestions bot for Discord. It allows users to
-            share their thoughts anonymously, ensuring their privacy and confidentiality.</p>
-    </section>
+        <div class="info">
+            <h2>Annoyingly Confide in us 🔒</h2>
+            <p>Do you have something on your mind that you want to share, but you don't want anyone to know it's you? Do
+                you want to give honest feedback or suggestions to someone, but you are afraid of the consequences? Do
+                you want to confess your feelings or secrets, but you are too shy or embarrassed?
 
-    <section class="how-it-works">
-        <h2>How It Works</h2>
-        <p>1. Add SecretSanctary bot to your Discord server.</p>
-        <p>2. Users can submit their confessions, feedback, or suggestions using the bot's commands.</p>
-        <p>3. All submissions are kept anonymous and private.</p>
-    </section>
-
-    <section class="privacy">
-        <h2>Privacy Protection</h2>
-        <p>SecretSanctary bot takes user privacy seriously. All submissions are encrypted and stored securely. No
-            personal information is collected or shared.</p>
-    </section>
-
-    <section class="random-confessions">
-        <h2>Random Confessions</h2>
-        <!-- Add code here to display random confessions from the bot -->
-        <div id="random-confession"></div>
+                If you answered yes to any of these questions, then you need SecretSanctary, the ultimate anonymous
+                confession, feedback, and suggestions bot for Discord</p>
+        </div>
+        <div class="logo-div">
+            <img class="logo"
+                src="https://media.discordapp.net/attachments/1168877083301257279/1169615000676085810/snid4ju.png?ex=65560bda&is=654396da&hm=c1c21635b511146f1aa0eea5f27f264afd1c4dfa5831621ec43879ab512d961f&=&width=600&height=600">
+        </div>
     </section>
 
     <section class="add-bot">
-        <h2>Add SecretSanctary to Your Server</h2>
-        <p>Click the link below to add SecretSanctary bot to your Discord server:</p>
-        <a class="link" href="YOUR_DISCORD_BOT_INVITE_LINK_HERE" target="_blank">Add SecretSanctary Bot</a>
+        <h2>🤖 Add SecretSanctary to Your Server</h2>
+        <div class="add-bot-link-parent">
+            <a class="add-bot-link"
+                href="https://discord.com/api/oauth2/authorize?client_id=1168874960081649684&permissions=448824986689&scope=applications.commands%20bot"
+                target="_blank">Add SecretSanctary Bot</a>
+        </div>
+    </section>
+
+
+    <section class="privacy">
+        <h2>🪬 Privacy Protection</h2>
+        <p>SecretSanctary bot takes user privacy seriously. All submissions are stored anonymously. We dont store your
+            username/id.</p>
+    </section>
+
+    <section class="random-confessions">
+        <h2>✨ Explore our Commands</h2>
+        <div class="commands">
+            <button class="commands-button" onclick="window.location.href='/confessions'">Anonymous Confessions
+                😜</button>
+            <button class="commands-button">Anonymous Feedback 🤔</button>
+            <button class="commands-button">Anonymous Suggestions 🤫</button>
+        </div>
+    </section>
+
+    <section class="support-server">
+        <h2>👥 Join our Community</h2>
+        <p>Join our Discord server to get support, report bugs, and suggest new features.</p>
+        <a href="https://discord.gg/nBA6kmqaaK" target="_blank"><button class="button">Join Server</button></a>
     </section>
 
     <footer>

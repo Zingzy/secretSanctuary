@@ -11,6 +11,9 @@ from utils import load_confessions, save_confession
 app = Flask(__name__)
 CORS(app)
 
+@app.route("/", methods=["GET"])
+def index():
+    return render_template("index.html")
 
 @app.route("/confessions", methods=["GET"])
 def confess():
