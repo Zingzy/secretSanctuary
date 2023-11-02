@@ -1,8 +1,17 @@
 import discord
 from discord import ui, app_commands
 from discord.ext import commands
-from utils import mongo, suggestion_gifs, feedback_gifs, random_pfp, insert_suggestion, insert_feedback
+from utils import (
+    mongo,
+    suggestion_gifs,
+    feedback_gifs,
+    random_pfp,
+    insert_suggestion,
+    insert_feedback,
+    get_password,
+)
 import random
+
 
 class SuggestionModal(ui.Modal, title="contact mods without them knowing who you are"):
     suggestion = ui.TextInput(
@@ -25,10 +34,14 @@ class SuggestionModal(ui.Modal, title="contact mods without them knowing who you
         author = f"AnonymousUser#{random.randint(1000, 10000)}"
 
         embed.set_author(name=author)
-        embed.set_thumbnail(url="https://media2.giphy.com/media/EEbiK7EP3ohrNXQIc1/giphy.gif?cid=ecf05e47952vhkf0meyq1yogmi7cagsmnk04ji3t3xzd3ss8&ep=v1_gifs_search&rid=giphy.gif&ct=g")
+        embed.set_thumbnail(
+            url="https://media2.giphy.com/media/EEbiK7EP3ohrNXQIc1/giphy.gif?cid=ecf05e47952vhkf0meyq1yogmi7cagsmnk04ji3t3xzd3ss8&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+        )
         embed.set_footer(text="Anonymous Suggestion")
         await channel.send(embed=embed)
-        insert_suggestion(server_id=interaction.guild.id, suggestion=self.suggestion.value)
+        insert_suggestion(
+            server_id=interaction.guild.id, suggestion=self.suggestion.value
+        )
 
         embed2 = discord.Embed(
             description="Your anonymous suggestion has been successfully made !",
@@ -61,7 +74,9 @@ class FeedbackModal(ui.Modal, title="contact mods without them knowing who you a
 
         embed.set_author(name=author_name)
         embed.set_footer(text="Anonymous Feedback")
-        embed.set_thumbnail(url="https://media0.giphy.com/media/9xmjP6FkdINCA6Ucp4/giphy.gif?cid=ecf05e47z0fiascm1vdb3dfk91iq68hvbousm205bgkq7dkv&ep=v1_gifs_search&rid=giphy.gif&ct=g")
+        embed.set_thumbnail(
+            url="https://media0.giphy.com/media/9xmjP6FkdINCA6Ucp4/giphy.gif?cid=ecf05e47z0fiascm1vdb3dfk91iq68hvbousm205bgkq7dkv&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+        )
         await channel.send(embed=embed)
         insert_feedback(server_id=interaction.guild.id, feedback=self.feedback.value)
 
@@ -79,6 +94,82 @@ class AnonymousSuggestion(commands.Cog):
         self.bot = bot
 
     @app_commands.command(
+        name="set-password",
+        description="Set a password for your server",
+    )
+    @app_commands.default_permissions(administrator=True)
+    async def set_password(self, interaction: discord.Interaction, password: str):
+        await interaction.response.defer()
+        db = mongo("servers")
+        server = db.find_one({"_id": interaction.guild.id})
+        schema = {
+            "_id": interaction.guild.id,
+            "suggestion_channel": None,
+            "feedback_channel": None,
+            "feedbacks": [],
+            "suggestions": [],
+            "password": password,
+        }
+        if not server:
+            db.insert_one(schema)
+            await interaction.followup.send(
+                embed=discord.Embed(
+                    title="Password set ✨",
+                    description=f"Your password is now {password}",
+                    color=discord.Color.green(),
+                ),
+                ephemeral=True,
+            )
+            return
+        db.update_one({"_id": interaction.guild.id}, {"$set": {"password": password}})
+        await interaction.followup.send(
+            embed=discord.Embed(
+                title="Password set ✨",
+                description=f"Your password is now {password}",
+                color=discord.Color.green(),
+            ),
+            ephemeral=True,
+        )
+
+    @app_commands.command(
+        name="password",
+        description="Get a password of your server",
+    )
+    @app_commands.default_permissions(administrator=True)
+    async def password(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        db = mongo("servers")
+        server = db.find_one({"_id": interaction.guild.id})
+        schema = {
+            "_id": interaction.guild.id,
+            "suggestion_channel": None,
+            "feedback_channel": None,
+            "feedbacks": [],
+            "suggestions": [],
+            "password": interaction.guild.id,
+        }
+        if not server:
+            db.insert_one(schema)
+            await interaction.followup.send(
+                embed=discord.Embed(
+                    title="Password",
+                    description=f"Your password is {interaction.guild.id}",
+                    color=discord.Color.green(),
+                ),
+                ephemeral=True,
+            )
+            return
+
+        await interaction.followup.send(
+            embed=discord.Embed(
+                title="Password",
+                description=f"Your password is {server['password']}",
+                color=discord.Color.green(),
+            ),
+            ephemeral=True,
+        )
+
+    @app_commands.command(
         name="suggest",
         description="Suggest anything you want",
     )
@@ -87,10 +178,22 @@ class AnonymousSuggestion(commands.Cog):
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
         if not server:
-            await interaction.response.send_message(embed=discord.Embed(title="No suggestion channel set", description="Ask the server mods to set up the feedback channel", color=discord.Color.red() ))
+            await interaction.response.send_message(
+                embed=discord.Embed(
+                    title="No suggestion channel set",
+                    description="Ask the server mods to set up the feedback channel",
+                    color=discord.Color.red(),
+                )
+            )
             return
         if server["suggestion_channel"] is None:
-            await interaction.response.send_message(embed=discord.Embed(title="No suggestion channel set", description="Ask the server mods to set up the feedback channel", color=discord.Color.red() ))
+            await interaction.response.send_message(
+                embed=discord.Embed(
+                    title="No suggestion channel set",
+                    description="Ask the server mods to set up the feedback channel",
+                    color=discord.Color.red(),
+                )
+            )
             return
         await interaction.response.send_modal(SuggestionModal())
 
@@ -104,10 +207,24 @@ class AnonymousSuggestion(commands.Cog):
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
         if not server:
-            await interaction.response.send_message(embed=discord.Embed(title="No feedback channel set", description="Ask the server mods to set up the feedback channel", color=discord.Color.red() ), ephemeral=True)
+            await interaction.response.send_message(
+                embed=discord.Embed(
+                    title="No feedback channel set",
+                    description="Ask the server mods to set up the feedback channel",
+                    color=discord.Color.red(),
+                ),
+                ephemeral=True,
+            )
             return
         if server["feedback_channel"] is None:
-            await interaction.response.send_message(embed=discord.Embed(title="No feedback channel set", description="Ask the server mods to set up the feedback channel", color=discord.Color.red() ), ephemeral=True)
+            await interaction.response.send_message(
+                embed=discord.Embed(
+                    title="No feedback channel set",
+                    description="Ask the server mods to set up the feedback channel",
+                    color=discord.Color.red(),
+                ),
+                ephemeral=True,
+            )
             return
         await interaction.response.send_modal(FeedbackModal())
 
@@ -128,14 +245,13 @@ class AnonymousSuggestion(commands.Cog):
             "feedback_channel": None,
             "feedbacks": [],
             "suggestions": [],
+            "password": interaction.guild.id,
         }
 
         if not server:
             db.insert_one(schema)
             if channel is None:
-                await interaction.followup.send(
-                    "set suggestion channel to None"
-                )
+                await interaction.followup.send("set suggestion channel to None")
                 return
             await interaction.followup.send(
                 f"set suggestion channel to {channel.mention}"
@@ -146,18 +262,32 @@ class AnonymousSuggestion(commands.Cog):
             db.update_one(
                 {"_id": interaction.guild.id}, {"$set": {"suggestion_channel": None}}
             )
-            await (interaction.followup.send("set suggestion channel to None"))
+            await interaction.followup.send("set suggestion channel to None")
             return
         db.update_one(
             {"_id": interaction.guild.id}, {"$set": {"suggestion_channel": channel.id}}
         )
 
-        await interaction.followup.send(embed=discord.Embed(title="Suggestion channel set ✨", description="You can now use the /suggest command", color=discord.Color.green() ), ephemeral=True)
+        await interaction.followup.send(
+            embed=discord.Embed(
+                title="Suggestion channel set ✨",
+                description="You can now use the /suggest command",
+                color=discord.Color.green(),
+            ),
+            ephemeral=True,
+        )
 
     @suggestion_channel.error
     async def suggestion_channel_error(self, interaction: discord.Interaction, error):
         if isinstance(error, app_commands.errors.MissingPermissions):
-            await interaction.followup.send(embed=discord.Embed(title="Missing permissions", description="You need to be an administrator to use this command", color=discord.Color.red() ), ephemeral=True)
+            await interaction.followup.send(
+                embed=discord.Embed(
+                    title="Missing permissions",
+                    description="You need to be an administrator to use this command",
+                    color=discord.Color.red(),
+                ),
+                ephemeral=True,
+            )
             return
 
     @app_commands.command()
@@ -177,6 +307,7 @@ class AnonymousSuggestion(commands.Cog):
             "feedback_channel": channel_id,
             "feedbacks": [],
             "suggestions": [],
+            "password": interaction.guild.id,
         }
 
         if not server:
@@ -199,12 +330,26 @@ class AnonymousSuggestion(commands.Cog):
             {"_id": interaction.guild.id}, {"$set": {"feedback_channel": channel.id}}
         )
 
-        await interaction.followup.send(embed=discord.Embed(title="Feedback channel set ✨", description="You can now use the /feedback command", color=discord.Color.green() ), ephemeral=True)
+        await interaction.followup.send(
+            embed=discord.Embed(
+                title="Feedback channel set ✨",
+                description="You can now use the /feedback command",
+                color=discord.Color.green(),
+            ),
+            ephemeral=True,
+        )
 
     @feedback_channel.error
     async def feedback_channel_error(self, interaction: discord.Interaction, error):
         if isinstance(error, app_commands.errors.MissingPermissions):
-            await interaction.response.send_message(embed=discord.Embed(title="Missing permissions", description="You need to be an administrator to use this command", color=discord.Color.red() ), ephemeral=True)
+            await interaction.response.send_message(
+                embed=discord.Embed(
+                    title="Missing permissions",
+                    description="You need to be an administrator to use this command",
+                    color=discord.Color.red(),
+                ),
+                ephemeral=True,
+            )
             return
 
 
