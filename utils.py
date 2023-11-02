@@ -42,11 +42,11 @@ def random_pfp():
     return random.choice(data).strip()
 
 
-def mongo():
+def mongo(db):
     dns.resolver.default_resolver = dns.resolver.Resolver(configure=False)
     dns.resolver.default_resolver.nameservers = ["8.8.8.8"]
     data = pymongo.MongoClient(MONGODB_URI)
-    user = data["secretSanctuary"]["users"]
+    user = data[db]["users"]
     return user
 
 
@@ -56,7 +56,7 @@ def save_confession(data):
 
 
 def load_confessions(size):
-    db = mongo()
+    db = mongo(db="secretSanctuary")
     confessions = db.aggregate([{"$sample": {"size": size}}])
     confession = []
     for conf in confessions:
