@@ -14,6 +14,7 @@ from utils import (
     save_confession,
     waiting_gifs,
     random_pfp,
+    commands_
 )
 from app import run_server
 import discord
@@ -39,7 +40,12 @@ class anonymousConfessionsBot(commands.Bot):
         await self.wait_until_ready()
         if not self.synced:
             await self.tree.sync()
-            await bot.change_presence(activity=discord.CustomActivity(name="Custom Status", state=f"Confessing, Suggesting, Haunting. Secrets in the Shadows. 👥🤫"))
+            await bot.change_presence(
+                activity=discord.CustomActivity(
+                    name="Custom Status",
+                    state=f"Confessing, Suggesting, Haunting. Secrets in the Shadows. 👥🤫",
+                )
+            )
             self.synced = True
 
         print(f"Logged in as {self.user.name} (ID: {self.user.id})")
@@ -138,6 +144,23 @@ async def ping(ctx):
     except Exception as e:
         print(e, file=sys.stdout)
 
+@bot.hybrid_command(name="help", description="View the various commands of this server")
+async def help(ctx):
+
+    user = bot.get_user(1168874960081649684)
+    profilePicture = user.avatar.url
+
+    embed = discord.Embed(title="SecretSanctuary Bot Commands", url="https://secret.jinxed.cf",
+                        description="Here is the list of the available commands:", color=discord.Color.og_blurple())
+
+    embed.set_thumbnail(url=profilePicture)
+    for i in commands_.keys():
+        embed.add_field(name=i, value=commands_[i], inline=False)
+
+    embed.set_footer(text="Information requested by: {}".format(ctx.author.name),
+                    icon_url=ctx.author.avatar.url)
+
+    await ctx.send(embed=embed)
 
 if __name__ == "__main__":
     run_server()

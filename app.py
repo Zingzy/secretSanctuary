@@ -6,22 +6,33 @@ import sys
 import os
 import requests
 import random
-from utils import load_confessions, save_confession, get_suggestion, get_feedback, get_password, get_server_name_and_icon
+from utils import (
+    load_confessions,
+    save_confession,
+    get_suggestion,
+    get_feedback,
+    get_password,
+    get_server_name_and_icon,
+)
 
 app = Flask(__name__)
 CORS(app)
+
 
 @app.route("/", methods=["GET"])
 def index():
     return render_template("index.html")
 
+
 @app.route("/status", methods=["GET"])
 def status():
     return jsonify({"status": "ok"}), 200
 
+
 @app.route("/tos", methods=["GET"])
 def tos():
     return render_template("tos.html")
+
 
 @app.route("/confessions", methods=["GET"])
 def confess():
@@ -41,6 +52,7 @@ def confess():
 
     return render_template("confessions.html", data=new_dic)
 
+
 @app.route("/suggestions/<server_id>", methods=["GET"])
 def suggestions(server_id):
     server_id = int(server_id)
@@ -49,10 +61,15 @@ def suggestions(server_id):
     try:
         password_db = get_password(server_id)
     except:
-        return render_template("suggestions.html", server_id_error="Server not found, perhaps the bot is not added in the server yet!")
+        return render_template(
+            "suggestions.html",
+            server_id_error="Server not found, perhaps the bot is not added in the server yet!",
+        )
 
     if password != password_db:
-        return render_template("suggestions.html", server_id=server_id, password_error="Incorrect password")
+        return render_template(
+            "suggestions.html", server_id=server_id, password_error="Incorrect password"
+        )
 
     data = get_suggestion(server_id)
 
@@ -62,7 +79,13 @@ def suggestions(server_id):
         data = data[::-1]
         data = data[:20]
 
-    return render_template("suggestions_view.html", data=data, server_name=server_name, server_icon=server_icon)
+    return render_template(
+        "suggestions_view.html",
+        data=data,
+        server_name=server_name,
+        server_icon=server_icon,
+    )
+
 
 @app.route("/feedbacks/<server_id>", methods=["GET"])
 def feedbacks(server_id):
@@ -72,14 +95,20 @@ def feedbacks(server_id):
     try:
         password_db = get_password(server_id)
     except:
-        return render_template("feedback.html", server_id_error="Server not found, perhaps the bot is not added in the server yet!")
+        return render_template(
+            "feedback.html",
+            server_id_error="Server not found, perhaps the bot is not added in the server yet!",
+        )
 
     if password != password_db:
-        return render_template("feedback.html", server_id=server_id, password_error="Incorrect password")
-
+        return render_template(
+            "feedback.html", server_id=server_id, password_error="Incorrect password"
+        )
 
     if password != get_password(server_id):
-        return render_template("feedback.html", server_id=server_id, password_error="Incorrect password")
+        return render_template(
+            "feedback.html", server_id=server_id, password_error="Incorrect password"
+        )
 
     data = get_feedback(server_id)
 
@@ -89,15 +118,23 @@ def feedbacks(server_id):
         data = data[::-1]
         data = data[:20]
 
-    return render_template("feedbacks-view.html", data=data, server_name=server_name, server_icon=server_icon)
+    return render_template(
+        "feedbacks-view.html",
+        data=data,
+        server_name=server_name,
+        server_icon=server_icon,
+    )
+
 
 @app.route("/suggestions", methods=["GET"])
 def suggestions_page():
     return render_template("suggestions.html")
 
+
 @app.route("/feedbacks", methods=["GET"])
 def feedback():
     return render_template("feedback.html")
+
 
 def run():
     app.run(host="0.0.0.0", port=8000, debug=True, use_reloader=False)

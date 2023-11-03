@@ -3,8 +3,9 @@ import pymongo
 import datetime
 import random
 import dns.resolver
-from constants import MONGODB_URI, TOKEN
+from constants import MONGODB_URI, TOKEN, APP_URI
 import re
+import requests
 
 waiting_gifs = [
     "https://media3.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif?cid=ecf05e475p246q1gdcu96b5mkqlqvuapb7xay2hywmki7f5q&ep=v1_gifs_search&rid=giphy.gif&ct=g",
@@ -51,7 +52,7 @@ feedback_gifs = [
 
 def is_valid_password(password):
     # Regular expression to match only numbers and letters
-    if not 4 <= len(password) <= 20 :
+    if not 4 <= len(password) <= 20:
         return False
 
     pattern = r"^[a-zA-Z0-9]+$"
@@ -147,11 +148,26 @@ def set_password(server_id, password):
     db = mongo("servers")
     db.update_one({"_id": server_id}, {"$set": {"password": password}})
 
+commands_ = {
+    "</confess:1168891677025509396> 🫨": f"""Confess anything anonymously and view your confessions [over here]({APP_URI}/confessions)""",
+    "</explore-confessions:1169331615906930839> ⛵": "See random super secret confessions",
+    "</feedback:1169525961570660384> 📝":"Write a feedback for this server Anonymously.",
+    "</suggest:1169520644199813182> ✍️": "Write a suggestion to this server Anonymously.",
+    "**Admin Commands** ⚙️": """These commands can only be used by the server admins
+- </password:1169692446234529917> : View the password for the server
+- </set-password:1169692446234529916> : Set the password for the server
+- </feedback-channel:1169739640866078750> : Set the channel where the anonymous feedbacks will be posted
+- </suggestion-channel:1169739575640461332> : Set the channel where the anonymous suggestions will be posted
+""",
+    "</help:1170012526180827157> ❔": "See this message again",
+}
 
-import requests
 
 def get_server_name_and_icon(server_id):
-    response = requests.get(f"https://discord.com/api/v9/guilds/{server_id}", headers={"Authorization": f"Bot {TOKEN}"})
+    response = requests.get(
+        f"https://discord.com/api/v9/guilds/{server_id}",
+        headers={"Authorization": f"Bot {TOKEN}"},
+    )
     if response.status_code == 200:
         data = response.json()
         name = data["name"]

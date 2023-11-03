@@ -9,7 +9,7 @@ from utils import (
     insert_suggestion,
     insert_feedback,
     get_password,
-    is_valid_password
+    is_valid_password,
 )
 from constants import APP_URI
 import random
@@ -43,11 +43,15 @@ class SuggestionModal(ui.Modal, title="contact mods without them knowing who you
             description=self.suggestion.value,
             color=discord.Color.og_blurple(),
         )
-        embed.set_author(name="Anonymous Suggestion by "+author)
+        embed.set_author(name="Anonymous Suggestion by " + author)
         embed.set_thumbnail(
             url="https://media2.giphy.com/media/EEbiK7EP3ohrNXQIc1/giphy.gif?cid=ecf05e47952vhkf0meyq1yogmi7cagsmnk04ji3t3xzd3ss8&ep=v1_gifs_search&rid=giphy.gif&ct=g"
         )
-        embed.add_field(name="You can view the server suggestions at", value=f"{APP_URI}/suggestions/{interaction.guild_id}", inline=False)
+        embed.add_field(
+            name="You can view the server suggestions at",
+            value=f"{APP_URI}/suggestions/{interaction.guild_id}",
+            inline=False,
+        )
         embed.set_footer(text="Anonymous Suggestion")
         await channel.send(embed=embed)
         insert_suggestion(
@@ -83,12 +87,16 @@ class FeedbackModal(ui.Modal, title="contact mods without them knowing who you a
             description=self.feedback.value,
             color=discord.Color.og_blurple(),
         )
-        embed.set_author(name="Anoymous Feedback by "+author_name)
+        embed.set_author(name="Anoymous Feedback by " + author_name)
         embed.set_footer(text="Anonymous Feedback")
         embed.set_thumbnail(
             url="https://media0.giphy.com/media/9xmjP6FkdINCA6Ucp4/giphy.gif?cid=ecf05e47z0fiascm1vdb3dfk91iq68hvbousm205bgkq7dkv&ep=v1_gifs_search&rid=giphy.gif&ct=g"
         )
-        embed.add_field(name="You can view the server feedbacks at", value=f"{APP_URI}/feedbacks/{interaction.guild_id}", inline=False)
+        embed.add_field(
+            name="You can view the server feedbacks at",
+            value=f"{APP_URI}/feedbacks/{interaction.guild_id}",
+            inline=False,
+        )
         await channel.send(embed=embed)
 
         insert_feedback(server_id=interaction.guild.id, feedback=self.feedback.value)
@@ -245,7 +253,9 @@ class AnonymousSuggestion(commands.Cog):
             return
         await interaction.response.send_modal(FeedbackModal())
 
-    @app_commands.command(name = "suggestion-channel", description = "Set a suggestion channel")
+    @app_commands.command(
+        name="suggestion-channel", description="Set a suggestion channel"
+    )
     @app_commands.default_permissions(administrator=True)
     async def suggestion_channel(
         self, interaction: discord.Interaction, channel: discord.TextChannel = None
@@ -272,9 +282,7 @@ class AnonymousSuggestion(commands.Cog):
                     title="Suggestions channel set to None ✨",
                     color=discord.Color.greyple(),
                 )
-                await interaction.response.send_message(
-                    embed=embed, ephemeral=True
-                )
+                await interaction.response.send_message(embed=embed, ephemeral=True)
                 return
 
             embed = discord.Embed(
@@ -282,16 +290,20 @@ class AnonymousSuggestion(commands.Cog):
                 description="You can now use the </suggest:1169520644199813182> command",
                 color=discord.Color.green(),
             )
-            await interaction.response.send_message(
-                embed=embed, ephemeral=True
-            )
+            await interaction.response.send_message(embed=embed, ephemeral=True)
             return
 
         if channel is None:
             db.update_one(
                 {"_id": interaction.guild.id}, {"$set": {"suggestion_channel": None}}
             )
-            await interaction.response.send_message(embed=discord.Embed(title="Suggestion channel set to None ✨", color=discord.Color.greyple()), ephemeral=True)
+            await interaction.response.send_message(
+                embed=discord.Embed(
+                    title="Suggestion channel set to None ✨",
+                    color=discord.Color.greyple(),
+                ),
+                ephemeral=True,
+            )
             return
         db.update_one(
             {"_id": interaction.guild.id}, {"$set": {"suggestion_channel": channel.id}}
@@ -346,9 +358,7 @@ class AnonymousSuggestion(commands.Cog):
                     title="Feedback channel set to None ✨",
                     color=discord.Color.greyple(),
                 )
-                await interaction.response.send_message(
-                    embed=embed, ephemeral=True
-                )
+                await interaction.response.send_message(embed=embed, ephemeral=True)
                 return
 
             embed = discord.Embed(
@@ -356,9 +366,7 @@ class AnonymousSuggestion(commands.Cog):
                 description="You can now use the </feedback:1169525961570660384> command",
                 color=discord.Color.green(),
             )
-            await interaction.response.send_message(
-                embed=embed, ephemeral=True
-            )
+            await interaction.response.send_message(embed=embed, ephemeral=True)
 
             return
 
@@ -366,15 +374,20 @@ class AnonymousSuggestion(commands.Cog):
             db.update_one(
                 {"_id": interaction.guild.id}, {"$set": {"feedback_channel": None}}
             )
-            await interaction.response.send_message(embed=discord.Embed(title="Feedback channel set to None ✨",
-                    color=discord.Color.greyple()), ephemeral=True)
+            await interaction.response.send_message(
+                embed=discord.Embed(
+                    title="Feedback channel set to None ✨",
+                    color=discord.Color.greyple(),
+                ),
+                ephemeral=True,
+            )
             return
         db.update_one(
             {"_id": interaction.guild.id}, {"$set": {"feedback_channel": channel.id}}
         )
 
         await interaction.response.send_message(
-            embed = discord.Embed(
+            embed=discord.Embed(
                 title=f"Feedback channel set to {channel.mention}✨",
                 description="You can now use the </feedback:1169525961570660384> command",
                 color=discord.Color.green(),
