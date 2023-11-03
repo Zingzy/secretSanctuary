@@ -4,6 +4,7 @@ import datetime
 import random
 import dns.resolver
 from constants import MONGODB_URI, TOKEN
+import re
 
 waiting_gifs = [
     "https://media3.giphy.com/media/l0HlBO7eyXzSZkJri/giphy.gif?cid=ecf05e475p246q1gdcu96b5mkqlqvuapb7xay2hywmki7f5q&ep=v1_gifs_search&rid=giphy.gif&ct=g",
@@ -46,6 +47,20 @@ feedback_gifs = [
 # def save_confession(data):
 #     with open(r"data/confessions.json", "w") as f:
 #         f.write(json.dumps(data, indent=4))
+
+
+def is_valid_password(password):
+    # Regular expression to match only numbers and letters
+    if not 4 <= len(password) <= 20 :
+        return False
+
+    pattern = r"^[a-zA-Z0-9]+$"
+
+    # Check if the password matches the pattern
+    if re.match(pattern, password):
+        return True
+    else:
+        return False
 
 
 def random_pfp():
@@ -96,7 +111,6 @@ def insert_feedback(server_id, feedback):
     db = mongo("servers")
     server = db.find_one({"_id": server_id})
     feedbacks = server["feedbacks"]
-    print(feedbacks)
     identifier = random.randint(1000, 10000)
     append = {
         "feedback": feedback,

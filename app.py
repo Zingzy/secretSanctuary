@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, redirect, render_template
+from flask import Flask, jsonify, request, redirect, render_template, url_for
 from flask_cors import CORS
 from threading import Thread
 import json
@@ -41,8 +41,14 @@ def confess():
 def suggestions(server_id):
     server_id = int(server_id)
     password = request.args.get("password")
-    if password != get_password(server_id):
-        return redirect("/")
+
+    try:
+        password_db = get_password(server_id)
+    except:
+        return render_template("suggestions.html", server_id_error="Server not found, perhaps the bot is not added in the server yet!")
+
+    if password != password_db:
+        return render_template("suggestions.html", server_id=server_id, password_error="Incorrect password")
 
     data = get_suggestion(server_id)
 
@@ -58,8 +64,18 @@ def suggestions(server_id):
 def feedbacks(server_id):
     server_id = int(server_id)
     password = request.args.get("password")
+
+    try:
+        password_db = get_password(server_id)
+    except:
+        return render_template("feedback.html", server_id_error="Server not found, perhaps the bot is not added in the server yet!")
+
+    if password != password_db:
+        return render_template("feedback.html", server_id=server_id, password_error="Incorrect password")
+
+
     if password != get_password(server_id):
-        return redirect("/")
+        return render_template("feedback.html", server_id=server_id, password_error="Incorrect password")
 
     data = get_feedback(server_id)
 
@@ -74,6 +90,10 @@ def feedbacks(server_id):
 @app.route("/suggestions", methods=["GET"])
 def suggestions_page():
     return render_template("suggestions.html")
+
+@app.route("/feedbacks", methods=["GET"])
+def feedback():
+    return render_template("feedback.html")
 
 def run():
     app.run(host="0.0.0.0", port=8000, debug=True, use_reloader=False)

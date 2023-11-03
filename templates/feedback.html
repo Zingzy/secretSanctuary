@@ -4,10 +4,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecretSanctuary</title>
     <link rel="icon"
         href="https://media.discordapp.net/attachments/1168652789614911490/1169654320178921552/kbxlw7n.png?ex=65563079&is=6543bb79&hm=d8c0b27d594cf719bb9b931e487b944b487c58d4a863307cdc5a1ebdceb59409&=&width=600&height=600">
 
-    <title>SecretSanctuary</title>
     <style>
         html {
             scroll-behavior: smooth;
@@ -261,11 +261,6 @@
             text-decoration: underline;
         }
 
-        .horizontalSeparator {
-            margin: 0 2.5vw;
-            border: 1px solid #363940;
-        }
-
         .forgot-password {
             background-color: #7289da;
             padding: 20px;
@@ -346,8 +341,8 @@
         <form class="container">
             <div class="centering-wrapper">
                 <div class="section1 text-center">
-                    <div class="primary-header">Anoymous Suggestions</div>
-                    <div class="secondary-header">Excited to see your server's Anonymous suggestions?</div>
+                    <div class="primary-header">Anoymous Feedbacks</div>
+                    <div class="secondary-header">Excited to see your server's Anonymous Feedbacks?</div>
                     <div class="input-position">
                         <div class="form-group">
                             <h5 class="input-placeholder" id="email-txt">Server ID <span class="error-message"
@@ -409,7 +404,7 @@
                     document.getElementById("password-error").innerHTML = "Please enter your server password";
                 }
             } else {
-                window.location.href = "/suggestions/" + serverid + "?password=" + password;
+                window.location.href = "/feedbacks/" + serverid + "?password=" + password;
             }
         };
     </script>

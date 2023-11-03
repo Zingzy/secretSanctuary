@@ -39,6 +39,7 @@ class anonymousConfessionsBot(commands.Bot):
         await self.wait_until_ready()
         if not self.synced:
             await self.tree.sync()
+            await bot.change_presence(activity=discord.CustomActivity(name="Custom Status", state=f"Confessing, Suggesting, Haunting. Secrets in the Shadows. 👥🤫"))
             self.synced = True
 
         print(f"Logged in as {self.user.name} (ID: {self.user.id})")
