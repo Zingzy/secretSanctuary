@@ -14,7 +14,7 @@ from utils import (
     save_confession,
     waiting_gifs,
     random_pfp,
-    commands_
+    commands_,
 )
 from app import run_server
 import discord
@@ -144,23 +144,30 @@ async def ping(ctx):
     except Exception as e:
         print(e, file=sys.stdout)
 
+
 @bot.hybrid_command(name="help", description="View the various commands of this server")
 async def help(ctx):
-
     user = bot.get_user(1168874960081649684)
     profilePicture = user.avatar.url
 
-    embed = discord.Embed(title="SecretSanctuary Bot Commands", url="https://secret.jinxed.cf",
-                        description="Here is the list of the available commands:", color=discord.Color.og_blurple())
+    embed = discord.Embed(
+        title="SecretSanctuary Bot Commands",
+        url="https://secret.jinxed.cf",
+        description="Here is the list of the available commands:",
+        color=discord.Color.og_blurple(),
+    )
 
     embed.set_thumbnail(url=profilePicture)
     for i in commands_.keys():
         embed.add_field(name=i, value=commands_[i], inline=False)
 
-    embed.set_footer(text="Information requested by: {}".format(ctx.author.name),
-                    icon_url=ctx.author.avatar.url)
+    embed.set_footer(
+        text="Information requested by: {}".format(ctx.author.name),
+        icon_url=ctx.author.avatar.url,
+    )
 
     await ctx.send(embed=embed)
+
 
 if __name__ == "__main__":
     run_server()
