@@ -75,7 +75,7 @@ pip install -r requirements.txt
 OR
 
 ```bash
-poetry install
+pipenv install
 
 ```
 
@@ -84,13 +84,13 @@ poetry install
 Linux
 
 ```bash
-python3 -m main.py
+python3 main.py
 
 ```
 Windows
 
 ```ps
-python -m main.py
+python main.py
 
 ```
 
