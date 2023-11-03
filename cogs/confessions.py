@@ -14,6 +14,8 @@ from utils import (
     random_pfp,
 )
 
+from constants import APP_URI
+
 
 class ConfessModal(ui.Modal, title="Spill the tea ☕"):
     confession = ui.TextInput(
@@ -37,8 +39,6 @@ class ConfessModal(ui.Modal, title="Spill the tea ☕"):
             "author": f"AnonymousUser#{identifier}",
         }
 
-        save_confession(data)
-
         embed = discord.Embed(
             description="# Your secret is safe with us! 😉",
             color=discord.Color.og_blurple(),
@@ -52,7 +52,7 @@ class ConfessModal(ui.Modal, title="Spill the tea ☕"):
         )
         embed.add_field(
             name="You can view your confession here",
-            value="https://confessions.idk.com",
+            value=APP_URI + "/confessions",
             inline=False,
         )
 
@@ -63,6 +63,8 @@ class ConfessModal(ui.Modal, title="Spill the tea ☕"):
         )
 
         await interaction.response.send_message(embed=embed, ephemeral=True)
+
+        save_confession(data)
 
 
 class AnonymousConfessions(commands.Cog):

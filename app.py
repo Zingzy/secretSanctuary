@@ -15,6 +15,10 @@ CORS(app)
 def index():
     return render_template("index.html")
 
+@app.route("/status", methods=["GET"])
+def status():
+    return jsonify({"status": "ok"}), 200
+
 @app.route("/tos", methods=["GET"])
 def tos():
     return render_template("tos.html")

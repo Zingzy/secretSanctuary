@@ -11,6 +11,7 @@ from utils import (
     get_password,
     is_valid_password
 )
+from constants import APP_URI
 import random
 
 
@@ -27,22 +28,8 @@ class SuggestionModal(ui.Modal, title="contact mods without them knowing who you
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
         channel = interaction.guild.get_channel(server["suggestion_channel"])
-        embed = discord.Embed(
-            description=self.suggestion.value,
-            color=discord.Color.og_blurple(),
-        )
 
         author = f"AnonymousUser#{random.randint(1000, 10000)}"
-
-        embed.set_author(name=author)
-        embed.set_thumbnail(
-            url="https://media2.giphy.com/media/EEbiK7EP3ohrNXQIc1/giphy.gif?cid=ecf05e47952vhkf0meyq1yogmi7cagsmnk04ji3t3xzd3ss8&ep=v1_gifs_search&rid=giphy.gif&ct=g"
-        )
-        embed.set_footer(text="Anonymous Suggestion")
-        await channel.send(embed=embed)
-        insert_suggestion(
-            server_id=interaction.guild.id, suggestion=self.suggestion.value
-        )
 
         embed2 = discord.Embed(
             description="Your anonymous suggestion has been successfully made !",
@@ -51,6 +38,21 @@ class SuggestionModal(ui.Modal, title="contact mods without them knowing who you
         embed2.set_image(url=random.choice(suggestion_gifs))
         embed2.set_footer(text="Anonymous Suggestion")
         await interaction.response.send_message(embed=embed2, ephemeral=True)
+
+        embed = discord.Embed(
+            description=self.suggestion.value,
+            color=discord.Color.og_blurple(),
+        )
+        embed.set_author(name="Anonymous Suggestion by "+author)
+        embed.set_thumbnail(
+            url="https://media2.giphy.com/media/EEbiK7EP3ohrNXQIc1/giphy.gif?cid=ecf05e47952vhkf0meyq1yogmi7cagsmnk04ji3t3xzd3ss8&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+        )
+        embed.add_field(name="You can view the server suggestions at", value=f"{APP_URI}/suggestions/{interaction.guild_id}", inline=False)
+        embed.set_footer(text="Anonymous Suggestion")
+        await channel.send(embed=embed)
+        insert_suggestion(
+            server_id=interaction.guild.id, suggestion=self.suggestion.value
+        )
 
 
 class FeedbackModal(ui.Modal, title="contact mods without them knowing who you are"):
@@ -66,20 +68,8 @@ class FeedbackModal(ui.Modal, title="contact mods without them knowing who you a
         db = mongo("servers")
         server = db.find_one({"_id": interaction.guild.id})
         channel = interaction.guild.get_channel(server["feedback_channel"])
-        embed = discord.Embed(
-            description=self.feedback.value,
-            color=discord.Color.og_blurple(),
-        )
 
         author_name = f"anonymousUser#{random.randint(1000, 10000)}"
-
-        embed.set_author(name=author_name)
-        embed.set_footer(text="Anonymous Feedback")
-        embed.set_thumbnail(
-            url="https://media0.giphy.com/media/9xmjP6FkdINCA6Ucp4/giphy.gif?cid=ecf05e47z0fiascm1vdb3dfk91iq68hvbousm205bgkq7dkv&ep=v1_gifs_search&rid=giphy.gif&ct=g"
-        )
-        await channel.send(embed=embed)
-        insert_feedback(server_id=interaction.guild.id, feedback=self.feedback.value)
 
         embed2 = discord.Embed(
             description="Your anonymous feedback has been successfully made !",
@@ -88,6 +78,20 @@ class FeedbackModal(ui.Modal, title="contact mods without them knowing who you a
         embed2.set_image(url=random.choice(feedback_gifs))
         embed2.set_footer(text="Anonymous Feedback")
         await interaction.response.send_message(embed=embed2, ephemeral=True)
+
+        embed = discord.Embed(
+            description=self.feedback.value,
+            color=discord.Color.og_blurple(),
+        )
+        embed.set_author(name="Anoymous Feedback by "+author_name)
+        embed.set_footer(text="Anonymous Feedback")
+        embed.set_thumbnail(
+            url="https://media0.giphy.com/media/9xmjP6FkdINCA6Ucp4/giphy.gif?cid=ecf05e47z0fiascm1vdb3dfk91iq68hvbousm205bgkq7dkv&ep=v1_gifs_search&rid=giphy.gif&ct=g"
+        )
+        embed.add_field(name="You can view the server feedbacks at", value=f"{APP_URI}/feedbacks{interaction.guild_id}", inline=False)
+        await channel.send(embed=embed)
+
+        insert_feedback(server_id=interaction.guild.id, feedback=self.feedback.value)
 
 
 class AnonymousSuggestion(commands.Cog):
