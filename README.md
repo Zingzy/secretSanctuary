@@ -46,7 +46,7 @@ Welcome to **Secret Sanctuary**, your anonymous confession, suggestion, and feed
 
 ### ⚙️ How to setup
 
-rename the `.env.example` file to `.env` and enter your `Bot token`, `prefix` (default=!) And `Mongodb uri`.
+rename the `.env.example` file to `.env` and enter your `Bot token`, `app uri` the uri of the host And `Mongodb uri`.
 
 #### Create Virtual environment (OPTIONAL)
 
