@@ -43,7 +43,60 @@ Welcome to **Secret Sanctuary**, your anonymous confession, suggestion, and feed
 
 ---
 
-## Discord Buildathon 2023
+
+### ⚙️ How to setup
+
+rename the `.env.example` file to `.env` and enter your `Bot token`, `prefix` (default=!) And `Mongodb uri`.
+
+#### Create Virtual environment (OPTIONAL)
+
+Linux
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+
+```
+Windows
+
+```ps
+python -m venv .venv
+.venv/Scripts/activate
+
+```
+
+#### install dependencies
+
+```bash
+pip install -r requirements.txt
+
+```
+
+OR
+
+```bash
+poetry install
+
+```
+
+#### Start the bot
+
+Linux
+
+```bash
+python3 -m bot.main
+
+```
+Windows
+
+```ps
+python -m bot.main
+
+```
+
+---
+
+### Discord Buildathon 2023
 
 Secret Sanctuary was developed for the Discord Buildathon 2023, providing a unique and secure way for Discord communities to engage with their users anonymously.
 
