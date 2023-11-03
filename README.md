@@ -1,4 +1,4 @@
-<image src='https://github.com/Zingzy/secretSanctuary/assets/90309290/9877c0b2-5308-4b15-a413-0c12349f403a'/>
+<image src='https://github.com/Zingzy/secretSanctuary/assets/90309290/8753300c-6417-4769-93b7-0afa50da02de'/>
 
 &nbsp;
 
