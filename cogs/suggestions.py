@@ -291,7 +291,7 @@ class AnonymousSuggestion(commands.Cog):
             db.update_one(
                 {"_id": interaction.guild.id}, {"$set": {"suggestion_channel": None}}
             )
-            await interaction.followup.send("set suggestion channel to None")
+            await interaction.response.send_message(embed=discord.Embed(title="Suggestion channel set to None ✨", color=discord.Color.greyple()), ephemeral=True)
             return
         db.update_one(
             {"_id": interaction.guild.id}, {"$set": {"suggestion_channel": channel.id}}
