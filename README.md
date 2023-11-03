@@ -84,13 +84,13 @@ poetry install
 Linux
 
 ```bash
-python3 -m bot.main
+python3 -m main.py
 
 ```
 Windows
 
 ```ps
-python -m bot.main
+python -m main.py
 
 ```
 
