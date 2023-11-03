@@ -88,7 +88,7 @@ class FeedbackModal(ui.Modal, title="contact mods without them knowing who you a
         embed.set_thumbnail(
             url="https://media0.giphy.com/media/9xmjP6FkdINCA6Ucp4/giphy.gif?cid=ecf05e47z0fiascm1vdb3dfk91iq68hvbousm205bgkq7dkv&ep=v1_gifs_search&rid=giphy.gif&ct=g"
         )
-        embed.add_field(name="You can view the server feedbacks at", value=f"{APP_URI}/feedbacks{interaction.guild_id}", inline=False)
+        embed.add_field(name="You can view the server feedbacks at", value=f"{APP_URI}/feedbacks/{interaction.guild_id}", inline=False)
         await channel.send(embed=embed)
 
         insert_feedback(server_id=interaction.guild.id, feedback=self.feedback.value)
