@@ -1,4 +1,4 @@
-<image src='https://github.com/Zingzy/secretSanctuary/assets/90309290/8753300c-6417-4769-93b7-0afa50da02de'/>
+<image src='https://github.com/Zingzy/secretSanctuary/assets/90309290/6de2ab95-4cf3-4183-b51b-86beb3bc3f36'/>
 
 &nbsp;
 
@@ -12,13 +12,13 @@
 </table>
 
 Welcome to **Secret Sanctuary**, your anonymous confession, suggestion, and feedback platform on Discord! This bot was created for the Discord Buildathon 2023, offering a safe space for users to share their thoughts and ideas anonymously within Discord servers.
-      
+
 ---
 
 ### ✨ Features
 
 - `\confess` Confess something anonymously and view confessions online at [https://secret.jinxed.cf/confessions](https://secret.jinxed.cf/confessions).
-  
+
 - `\suggest` Provide suggestions to the server anonymously.
 
 - `\feedback` Share feedback with the server anonymously.
@@ -75,7 +75,7 @@ pip install -r requirements.txt
 OR
 
 ```bash
-poetry install
+pipenv install
 
 ```
 
@@ -84,13 +84,13 @@ poetry install
 Linux
 
 ```bash
-python3 -m main.py
+python3 main.py
 
 ```
 Windows
 
 ```ps
-python -m main.py
+python main.py
 
 ```
 
