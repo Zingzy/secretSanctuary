@@ -148,10 +148,11 @@ def set_password(server_id, password):
     db = mongo("servers")
     db.update_one({"_id": server_id}, {"$set": {"password": password}})
 
+
 commands_ = {
     "</confess:1168891677025509396> 🫨": f"""Confess anything anonymously and view your confessions [over here]({APP_URI}/confessions)""",
     "</explore-confessions:1169331615906930839> ⛵": "See random super secret confessions",
-    "</feedback:1169525961570660384> 📝":"Write a feedback for this server Anonymously.",
+    "</feedback:1169525961570660384> 📝": "Write a feedback for this server Anonymously.",
     "</suggest:1169520644199813182> ✍️": "Write a suggestion to this server Anonymously.",
     "**Admin Commands** ⚙️": """These commands can only be used by the server admins
 - </password:1169692446234529917> : View the password for the server
